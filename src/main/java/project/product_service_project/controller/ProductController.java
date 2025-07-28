@@ -1,7 +1,9 @@
 package project.product_service_project.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.product_service_project.dto.ProductDTO;
 import project.product_service_project.model.Product;
@@ -32,12 +34,18 @@ public class ProductController {
     }
 
     @PostMapping("/insert")
-    public ProductDTO createProduct(@RequestBody ProductDTO dto ){
+    public ProductDTO createProduct(@RequestBody @Valid ProductDTO dto ){
         return service.createProduct(dto);
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteProductById(@PathVariable Long id){
         return service.deleteById(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id,@RequestBody @Valid Product updateProduct){
+        Product product= service.updateProduct(id, updateProduct);
+        return ResponseEntity.ok(product);
     }
 }
